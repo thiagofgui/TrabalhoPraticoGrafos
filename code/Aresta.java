@@ -1,4 +1,4 @@
-
+package code;
 
 public class Aresta {
     private Vertice origem;

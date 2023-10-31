@@ -1,9 +1,5 @@
 package code;
 
-import lib.Aresta;
-import lib.MatrizAdjacencia;
-import lib.Vertice;
-
 public class Main {
     public static void main(String[] args) {
 

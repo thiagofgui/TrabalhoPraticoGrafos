@@ -1,5 +1,4 @@
-
-
+package code;
 
 public class Vertice {
     private int valor;
