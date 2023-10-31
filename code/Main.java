@@ -19,7 +19,6 @@ public class Main {
         Aresta a7 = new Aresta(v6, v4, 3);
         Aresta a8 = new Aresta(v4, v5, 2);
 
-        // Testando a representação do grafo com matriz de adjacência
         MatrizAdjacencia grafoMatriz = new MatrizAdjacencia(6);
         grafoMatriz.adicionarVertice(v1);
         grafoMatriz.adicionarVertice(v2);
