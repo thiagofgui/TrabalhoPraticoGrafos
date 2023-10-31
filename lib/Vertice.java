@@ -1,4 +1,4 @@
-package lib;
+
 
 public class Vertice {
     private int valor;
@@ -28,6 +28,6 @@ public class Vertice {
 
     @Override
     public String toString() {
-        return valor + " (Peso: " + peso + ")";
+        return valor + "";
     }
 }
