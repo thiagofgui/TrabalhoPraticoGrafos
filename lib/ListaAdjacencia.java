@@ -1,6 +1,9 @@
+package code;
 
 
 import java.util.*;
+
+import Vertice;
 
 public class ListaAdjacencia {
     private Map<Vertice, List<Aresta>> listaAdjacencia;

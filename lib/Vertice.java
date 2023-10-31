@@ -1,5 +1,6 @@
 
 
+
 public class Vertice {
     private int valor;
     private int peso;

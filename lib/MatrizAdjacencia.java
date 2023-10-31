@@ -1,5 +1,6 @@
 
 
+
 import java.util.*;
 
 public class MatrizAdjacencia {
@@ -18,12 +19,18 @@ public class MatrizAdjacencia {
     public void adicionarAresta(Aresta aresta) {
         int origemIndex = vertices.indexOf(aresta.getOrigem());
         int destinoIndex = vertices.indexOf(aresta.getDestino());
-        matrizAdjacencia[origemIndex][destinoIndex] = aresta.getPeso();
-        matrizAdjacencia[destinoIndex][origemIndex] = aresta.getPeso();
+        matrizAdjacencia[origemIndex][destinoIndex] = 1;
+        matrizAdjacencia[destinoIndex][origemIndex] = 1;
     }
 
     public void imprimirMatrizAdjacencia() {
+        System.out.print("  ");
+        for (int z = 0; z < matrizAdjacencia.length; z++){
+            System.out.print(z + 1 + " ");
+        }
+        System.out.print("\n");
         for (int i = 0; i < matrizAdjacencia.length; i++) {
+            System.out.print(i + 1 + " ");
             for (int j = 0; j < matrizAdjacencia[i].length; j++) {
                 System.out.print(matrizAdjacencia[i][j] + " ");
             }
