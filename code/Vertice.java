@@ -1,33 +1,20 @@
 package code;
 
 public class Vertice {
-    private int valor;
-    private int peso;
+    String id;
+    int peso;
 
-    public Vertice(int valor) {
-        this.valor = valor;
-        this.peso = 0;
-    }
-
-    public Vertice(int valor, int peso) {
-        this.valor = valor;
+    public Vertice(String id, int peso) {
+        this.id = id;
         this.peso = peso;
     }
 
-    public int getValor() {
-        return valor;
-    }
-
-    public int getPeso() {
-        return peso;
-    }
-
-    public void setPeso(int peso) {
-        this.peso = peso;
+    public String printPesoVertice() {
+        return "Peso: " + peso;
     }
 
     @Override
     public String toString() {
-        return valor + "";
+        return id;
     }
 }

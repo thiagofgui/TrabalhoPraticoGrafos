@@ -1,31 +1,22 @@
 package code;
 
 public class Aresta {
-    private Vertice origem;
-    private Vertice destino;
-    private int peso;
+    Vertice origem;
+    Vertice destiVertice;
+    int peso;
 
-    public Aresta(Vertice origem, Vertice destino) {
+    public Aresta(Vertice origem, Vertice destiVertice, int peso) {
         this.origem = origem;
-        this.destino = destino;
-        this.peso = 0;
-    }
-
-    public Aresta(Vertice origem, Vertice destino, int peso) {
-        this.origem = origem;
-        this.destino = destino;
+        this.destiVertice = destiVertice;
         this.peso = peso;
     }
 
-    public Vertice getOrigem() {
-        return origem;
+    public String printPesoAresta() {
+        return "Peso: " + peso;
     }
 
-    public Vertice getDestino() {
-        return destino;
-    }
-
-    public int getPeso() {
-        return peso;
+    @Override
+    public String toString() {
+        return "(" + origem + " -> " + destiVertice + ")";
     }
 }

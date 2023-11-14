@@ -2,53 +2,44 @@ package code;
 
 public class Main {
     public static void main(String[] args) {
+        Grafo grafoDirecionado = new Grafo(true);
+        Vertice vertice1 = new Vertice("A", 10);
+        Vertice vertice2 = new Vertice("B", 20);
+        Vertice vertice3 = new Vertice("C", 30);
 
-        Vertice v1 = new Vertice(1);
-        Vertice v2 = new Vertice(2);
-        Vertice v3 = new Vertice(3);
-        Vertice v4 = new Vertice(4);
-        Vertice v5 = new Vertice(5);
-        Vertice v6 = new Vertice(6);
+        grafoDirecionado.adicionarVertice(vertice1);
+        grafoDirecionado.adicionarVertice(vertice2);
+        grafoDirecionado.adicionarVertice(vertice3);
 
-        Aresta a1 = new Aresta(v1, v2, 2);
-        Aresta a2 = new Aresta(v2, v3, 1);
-        Aresta a3 = new Aresta(v3, v4, 3);
-        Aresta a4 = new Aresta(v4, v1, 4);
-        Aresta a5 = new Aresta(v2, v5, 2);
-        Aresta a6 = new Aresta(v5, v6, 1);
-        Aresta a7 = new Aresta(v6, v4, 3);
-        Aresta a8 = new Aresta(v4, v5, 2);
+        Aresta aresta1 = new Aresta(vertice1, vertice2, 1);
+        Aresta aresta2 = new Aresta(vertice2, vertice3, 2);
+        Aresta aresta3 = new Aresta(vertice3, vertice1, 3);
 
-        MatrizAdjacencia grafoMatriz = new MatrizAdjacencia(6);
-        grafoMatriz.adicionarVertice(v1);
-        grafoMatriz.adicionarVertice(v2);
-        grafoMatriz.adicionarVertice(v3);
-        grafoMatriz.adicionarVertice(v4);
-        grafoMatriz.adicionarVertice(v5);
-        grafoMatriz.adicionarVertice(v6);
-        grafoMatriz.adicionarAresta(a1);
-        grafoMatriz.adicionarAresta(a2);
-        grafoMatriz.adicionarAresta(a3);
-        grafoMatriz.adicionarAresta(a4);
-        grafoMatriz.adicionarAresta(a5);
-        grafoMatriz.adicionarAresta(a6);
-        grafoMatriz.adicionarAresta(a7);
-        grafoMatriz.adicionarAresta(a8);
+        grafoDirecionado.adicionarAresta(aresta1);
+        grafoDirecionado.adicionarAresta(aresta2);
+        grafoDirecionado.adicionarAresta(aresta3);
 
-        System.out.println("Matriz de Adjacência:");
-        grafoMatriz.imprimirMatrizAdjacencia();
+        System.out.println("Grafo Direcionado:");
+        System.out.println(grafoDirecionado);
 
-        ListaAdjacencia grafoLista = new ListaAdjacencia();
-        grafoLista.adicionarVertice(v1);
-        grafoLista.adicionarVertice(v2);
-        grafoLista.adicionarVertice(v3);
-        grafoLista.adicionarVertice(v4);
-        grafoLista.adicionarAresta(a1);
-        grafoLista.adicionarAresta(a2);
-        grafoLista.adicionarAresta(a3);
-        grafoLista.adicionarAresta(a4);
+        grafoDirecionado.removerAresta(aresta2);
 
-        System.out.println("\nLista de Adjacência:");
-        grafoLista.imprimirListaAdjacencia();
+        System.out.println("Grafo Direcionado após remover a aresta entre B e C:");
+        System.out.println(grafoDirecionado);
+
+        Grafo grafoNaoDirecionado = new Grafo(false);
+
+        grafoNaoDirecionado.adicionarVertice(vertice1);
+        grafoNaoDirecionado.adicionarVertice(vertice2);
+        grafoNaoDirecionado.adicionarVertice(vertice3);
+
+        Aresta arestaNaoDirecionada1 = new Aresta(vertice1, vertice2, 4);
+        Aresta arestaNaoDirecionada2 = new Aresta(vertice2, vertice3, 5);
+
+        grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada1);
+        grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada2);
+
+        System.out.println("Grafo Não Direcionado:");
+        System.out.println(grafoNaoDirecionado);
     }
 }
