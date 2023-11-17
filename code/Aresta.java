@@ -2,12 +2,12 @@ package code;
 
 public class Aresta {
     Vertice origem;
-    Vertice destiVertice;
+    Vertice destino;
     int peso;
 
-    public Aresta(Vertice origem, Vertice destiVertice, int peso) {
+    public Aresta(Vertice origem, Vertice destino, int peso) {
         this.origem = origem;
-        this.destiVertice = destiVertice;
+        this.destino = destino;
         this.peso = peso;
     }
 
@@ -17,6 +17,6 @@ public class Aresta {
 
     @Override
     public String toString() {
-        return "(" + origem + " -> " + destiVertice + ")";
+        return "(" + origem + " -> " + destino + ")";
     }
 }
