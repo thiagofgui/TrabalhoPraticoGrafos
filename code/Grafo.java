@@ -123,6 +123,11 @@ public class Grafo {
         return matrizString;
     }
 
+    public boolean incidenciaArestaVertice(Aresta aresta, Vertice vertice) {
+        List<Aresta> arestas = listaAdjacencia.get(vertice);
+        return arestas != null && arestas.contains(aresta);
+    }
+
     @Override
     public String toString() {
         StringBuilder resultado = new StringBuilder();
