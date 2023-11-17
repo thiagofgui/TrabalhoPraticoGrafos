@@ -17,9 +17,26 @@ public class Grafo {
         this.listaAdjacencia = new HashMap<>();
     }
 
+    public boolean verificaGrafoVazio() {
+        return this.quantidadeVertice == 0;
+    }
+
+    public boolean verificaGrafoCompleto() {
+        int tamanho = listaAdjacencia.size();
+
+        if (this.isDirecionado) {
+            int arestasEsperadas = tamanho * (tamanho - 1);
+            return this.quantidadeAresta == arestasEsperadas;
+        } else {
+            int arestasEsperadas = tamanho * (tamanho - 1) / 2;
+            return this.quantidadeAresta == arestasEsperadas;
+        }
+
+    }
+
     public void adicionarVertice(Vertice Vertice) {
         listaAdjacencia.put(Vertice, new ArrayList<>());
-        quantidadeVertice++;
+        this.quantidadeVertice++;
     }
 
     public void adicionarAresta(Aresta aresta) {
@@ -28,7 +45,7 @@ public class Grafo {
         if (!isDirecionado) {
             listaAdjacencia.get(aresta.destino).add(new Aresta(aresta.destino, aresta.origem, aresta.peso));
         }
-        quantidadeAresta++;
+        this.quantidadeAresta++;
     }
 
     public List<Aresta> getArestas(Vertice Vertice) {
@@ -69,7 +86,7 @@ public class Grafo {
         if (!isDirecionado) {
             listaAdjacencia.get(aresta.destino).removeIf(a -> a.destino.equals(aresta.origem));
         }
-        quantidadeAresta--;
+        this.quantidadeAresta--;
     }
 
     public boolean arestaExiste(Vertice vertice, Vertice vertice2) {
