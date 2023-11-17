@@ -22,6 +22,9 @@ public class Main {
         System.out.println("Grafo Direcionado:");
         System.out.println(grafoDirecionado);
 
+        boolean incidencia = grafoDirecionado.incidenciaArestaVertice(aresta2, vertice2);
+        System.out.println("Aresta 2 incide no vértice 2? " + incidencia);
+
         grafoDirecionado.removerAresta(aresta2);
 
         System.out.println("Grafo Direcionado após remover a aresta entre B e C:");
