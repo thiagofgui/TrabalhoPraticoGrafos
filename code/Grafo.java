@@ -33,6 +33,19 @@ public class Grafo {
         }
 
     }
+    public List<Vertice> vizinhancaVertice(Vertice vertice) {
+        List<Aresta> arestas = listaAdjacencia.get(vertice);
+        List<Vertice> vizinhos = new ArrayList<>();
+
+        if (arestas != null) {
+            for (Aresta aresta : arestas) {
+                vizinhos.add(aresta.destino);
+            }
+        }
+
+        return vizinhos;
+    }
+
 
     public void adicionarVertice(Vertice Vertice) {
         listaAdjacencia.put(Vertice, new ArrayList<>());
