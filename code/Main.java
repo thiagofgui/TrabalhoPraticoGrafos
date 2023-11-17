@@ -35,9 +35,30 @@ public class Main {
 
         Aresta arestaNaoDirecionada1 = new Aresta(vertice1, vertice2, 4);
         Aresta arestaNaoDirecionada2 = new Aresta(vertice2, vertice3, 5);
-
+        Aresta arestaNaoDirecionada3 = new Aresta(vertice2, vertice3, 6);
         grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada1);
         grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada2);
+        grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada3);
+        if (grafoNaoDirecionado.verificaGrafoCompleto()) {
+            System.out.println("O grafo é completo.");
+        } else {
+            System.out.println("O grafo não é completo.");
+        }
+        if (grafoNaoDirecionado.verificaGrafoVazio()) {
+            System.out.println("O grafo está vazio.");
+        } else {
+            System.out.println("O grafo não está vazio.");
+        }
+        if (grafoDirecionado.verificaGrafoCompleto()) {
+            System.out.println("O grafo é completo.");
+        } else {
+            System.out.println("O grafo não é completo.");
+        }
+        if (grafoDirecionado.verificaGrafoVazio()) {
+            System.out.println("O grafo está vazio.");
+        } else {
+            System.out.println("O grafo não está vazio.");
+        }
 
         System.out.println("Grafo Não Direcionado:");
         System.out.println(grafoNaoDirecionado);

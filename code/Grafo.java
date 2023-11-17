@@ -16,9 +16,26 @@ public class Grafo {
         this.listaAdjacencia = new HashMap<>();
     }
 
+    public boolean verificaGrafoVazio() {
+        return this.quantidadeVertice == 0;
+    }
+
+    public boolean verificaGrafoCompleto() {
+        int tamanho = listaAdjacencia.size();
+
+        if (this.isDirecionado) {
+            int arestasEsperadas = tamanho * (tamanho - 1);
+            return this.quantidadeAresta == arestasEsperadas;
+        } else {
+            int arestasEsperadas = tamanho * (tamanho - 1) / 2;
+            return this.quantidadeAresta == arestasEsperadas;
+        }
+
+    }
+
     public void adicionarVertice(Vertice Vertice) {
         listaAdjacencia.put(Vertice, new ArrayList<>());
-        quantidadeVertice++;
+        this.quantidadeVertice++;
     }
 
     public void adicionarAresta(Aresta aresta) {
@@ -27,7 +44,7 @@ public class Grafo {
         if (!isDirecionado) {
             listaAdjacencia.get(aresta.destiVertice).add(new Aresta(aresta.destiVertice, aresta.origem, aresta.peso));
         }
-        quantidadeAresta++;
+        this.quantidadeAresta++;
     }
 
     public List<Aresta> getArestas(Vertice Vertice) {
@@ -68,7 +85,7 @@ public class Grafo {
         if (!isDirecionado) {
             listaAdjacencia.get(aresta.destiVertice).removeIf(a -> a.destiVertice.equals(aresta.origem));
         }
-        quantidadeAresta--;
+        this.quantidadeAresta--;
     }
 
     public String printMatriz() {
@@ -98,7 +115,8 @@ public class Grafo {
         resultado.append("Quantidade de arestas do grafo: " + quantidadeAresta + "\n");
         resultado.append("Lista de Adjacência: \n");
         for (Vertice Vertice : listaAdjacencia.keySet()) {
-            resultado.append(Vertice).append(" -> ").append(listaAdjacencia.get(Vertice)).append(" " + Vertice.printPesoVertice()).append("\n");
+            resultado.append(Vertice).append(" -> ").append(listaAdjacencia.get(Vertice))
+                    .append(" " + Vertice.printPesoVertice()).append("\n");
         }
         for (Vertice vertice : listaAdjacencia.keySet()) {
             List<Aresta> arestas = listaAdjacencia.get(vertice);
