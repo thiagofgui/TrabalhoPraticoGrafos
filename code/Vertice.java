@@ -9,6 +9,11 @@ public class Vertice {
         this.peso = peso;
     }
 
+    public Vertice(String id) {
+        this.id = id;
+        this.peso = 0;
+    }
+
     public String printPesoVertice() {
         return "Peso: " + peso;
     }
