@@ -7,7 +7,10 @@ import java.util.List;
 
 public class GrafoPAJEK {
 
-    public void gerarArquivoPAJEK(String caminhoArquivo, Grafo grafo) {
+    public static void gerarArquivoPAJEK(String caminhoArquivo, Grafo grafo) {
+        if (!caminhoArquivo.toLowerCase().endsWith(".net")) {
+            caminhoArquivo += ".net";
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
             // Escrever cabeçalho
             writer.write("*Vertices " + grafo.quantidadeVertice());
@@ -17,7 +20,7 @@ public class GrafoPAJEK {
             List<Vertice> vertices = grafo.getVertices();
             for (int i = 0; i < vertices.size(); i++) {
                 Vertice vertice = vertices.get(i);
-                writer.write((i + 1) + " \"" + vertice + "\" " + vertice.peso);
+                writer.write((i + 1) + " \"" + vertice.rotulo + "\" " + vertice.peso);
                 writer.newLine();
             }
 
@@ -32,7 +35,7 @@ public class GrafoPAJEK {
                 for (Aresta aresta : arestas) {
                     Vertice destino = aresta.destino;
                     writer.write(idAresta + " " + (vertices.indexOf(vertice) + 1) + " " +
-                            (vertices.indexOf(destino) + 1) + " " + aresta.peso + " \"" + aresta + "\"");
+                            (vertices.indexOf(destino) + 1) + " " + aresta.peso + " \"" + aresta.rotulo + "\"");
                     writer.newLine();
                     idAresta++;
                 }
