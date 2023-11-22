@@ -1,5 +1,3 @@
-package code;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +41,8 @@ public class Grafo {
         listaAdjacencia.get(aresta.origem).add(aresta);
 
         if (!direcionado) {
-            listaAdjacencia.get(aresta.destino).add(new Aresta(aresta.destino, aresta.origem, aresta.peso));
+            listaAdjacencia.get(aresta.destino)
+                    .add(new Aresta(aresta.destino, aresta.origem, aresta.peso, aresta.rotulo));
         }
         this.quantidadeAresta++;
     }

@@ -1,19 +1,17 @@
-package code;
-
 public class Main {
     public static void main(String[] args) {
         Grafo grafoDirecionado = new Grafo(true);
-        Vertice vertice1 = new Vertice("A", 10);
-        Vertice vertice2 = new Vertice("B", 20);
-        Vertice vertice3 = new Vertice("C", 30);
+        Vertice vertice1 = new Vertice(1, "a", 10);
+        Vertice vertice2 = new Vertice(2, "b", 20);
+        Vertice vertice3 = new Vertice(3, "c", 30);
 
         grafoDirecionado.adicionarVertice(vertice1);
         grafoDirecionado.adicionarVertice(vertice2);
         grafoDirecionado.adicionarVertice(vertice3);
 
-        Aresta aresta1 = new Aresta(vertice1, vertice2, 1);
-        Aresta aresta2 = new Aresta(vertice2, vertice3, 2);
-        Aresta aresta3 = new Aresta(vertice3, vertice1, 3);
+        Aresta aresta1 = new Aresta(vertice1, vertice2, 1, "a");
+        Aresta aresta2 = new Aresta(vertice2, vertice3, 2, "b");
+        Aresta aresta3 = new Aresta(vertice3, vertice1, 3, "c");
 
         grafoDirecionado.adicionarAresta(aresta1);
         grafoDirecionado.adicionarAresta(aresta2);
@@ -36,9 +34,9 @@ public class Main {
         grafoNaoDirecionado.adicionarVertice(vertice2);
         grafoNaoDirecionado.adicionarVertice(vertice3);
 
-        Aresta arestaNaoDirecionada1 = new Aresta(vertice1, vertice2, 4);
-        Aresta arestaNaoDirecionada2 = new Aresta(vertice2, vertice3, 5);
-        Aresta arestaNaoDirecionada3 = new Aresta(vertice2, vertice3, 6);
+        Aresta arestaNaoDirecionada1 = new Aresta(vertice1, vertice2, 4, "a");
+        Aresta arestaNaoDirecionada2 = new Aresta(vertice2, vertice3, 5, "b");
+        Aresta arestaNaoDirecionada3 = new Aresta(vertice2, vertice3, 6, "c");
         grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada1);
         grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada2);
         grafoNaoDirecionado.adicionarAresta(arestaNaoDirecionada3);
