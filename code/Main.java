@@ -1,9 +1,9 @@
 public class Main {
     public static void main(String[] args) {
         Grafo grafoDirecionado = new Grafo(true);
-        Vertice vertice1 = new Vertice(1, "a", 10);
-        Vertice vertice2 = new Vertice(2, "b", 20);
-        Vertice vertice3 = new Vertice(3, "c", 30);
+        Vertice vertice1 = new Vertice("a", 10);
+        Vertice vertice2 = new Vertice("b", 20);
+        Vertice vertice3 = new Vertice("c", 30);
 
         grafoDirecionado.adicionarVertice(vertice1);
         grafoDirecionado.adicionarVertice(vertice2);
