@@ -1,8 +1,49 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class GrafoPAJEK {
+
+    public void gerarArquivoPAJEK(String caminhoArquivo, Grafo grafo) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
+            // Escrever cabeçalho
+            writer.write("*Vertices " + grafo.quantidadeVertice());
+            writer.newLine();
+
+            // Escrever informações dos vértices
+            List<Vertice> vertices = grafo.getVertices();
+            for (int i = 0; i < vertices.size(); i++) {
+                Vertice vertice = vertices.get(i);
+                writer.write((i + 1) + " \"" + vertice + "\" " + vertice.peso);
+                writer.newLine();
+            }
+
+            // Escrever cabeçalho para arestas
+            writer.write("*Edges");
+            writer.newLine();
+
+            // Escrever informações das arestas
+            int idAresta = 1;
+            for (Vertice vertice : vertices) {
+                List<Aresta> arestas = grafo.getArestas(vertice);
+                for (Aresta aresta : arestas) {
+                    Vertice destino = aresta.destino;
+                    writer.write(idAresta + " " + (vertices.indexOf(vertice) + 1) + " " +
+                            (vertices.indexOf(destino) + 1) + " " + aresta.peso + " \"" + aresta + "\"");
+                    writer.newLine();
+                    idAresta++;
+                }
+            }
+
+            System.out.println("Arquivo PAJEK gerado com sucesso!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Erro ao gerar o arquivo PAJEK.");
+        }
+    }
 
     public static Grafo lerArquivoPAJEK(String caminhoArquivo, boolean direcionado) {
         Grafo grafo = null;

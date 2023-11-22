@@ -127,6 +127,14 @@ public class Grafo {
         return arestas != null && arestas.contains(aresta);
     }
 
+    public int quantidadeAresta() {
+        return quantidadeAresta;
+    }
+
+    public int quantidadeVertice() {
+        return quantidadeVertice;
+    }
+
     @Override
     public String toString() {
         StringBuilder resultado = new StringBuilder();
