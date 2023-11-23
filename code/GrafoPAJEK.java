@@ -4,10 +4,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class GrafoPAJEK {
 
@@ -22,7 +20,7 @@ public class GrafoPAJEK {
             Map<Vertice, Integer> indexMap = new HashMap<>();
             int index = 1;
             for (Vertice vertice : grafo.getVertices()) {
-                writer.write("\"" + vertice + "\" " + vertice.peso + "\n");
+                writer.write(index + " \"" + vertice + "\" " + vertice.peso + "\n");
                 indexMap.put(vertice, index);
                 index++;
             }
