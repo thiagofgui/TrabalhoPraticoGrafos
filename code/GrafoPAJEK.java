@@ -3,8 +3,10 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class GrafoPAJEK {
@@ -13,54 +15,29 @@ public class GrafoPAJEK {
         if (!caminhoArquivo.toLowerCase().endsWith(".net")) {
             caminhoArquivo += ".net";
         }
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
-            // Escrever cabeçalho
-            writer.write("*Vertices " + grafo.quantidadeVertice());
-            writer.newLine();
+            writer.write("*Vertices " + grafo.quantidadeVertice() + "\n");
 
-            // Escrever informações dos vértices
-            List<Vertice> vertices = grafo.getVertices();
-            for (int i = 0; i < vertices.size(); i++) {
-                Vertice vertice = vertices.get(i);
-                writer.write("\"" + vertice.rotulo + "\" " + vertice.peso);
-                writer.newLine();
+            // Mapeamento de vértices para índices
+            Map<Vertice, Integer> indexMap = new HashMap<>();
+            int index = 1;
+            for (Vertice vertice : grafo.getVertices()) {
+                writer.write("\"" + vertice + "\" " + vertice.peso + "\n");
+                indexMap.put(vertice, index);
+                index++;
             }
 
-            // Conjunto para armazenar arestas já processadas
-            Set<String> arestasProcessadas = new HashSet<>();
-
-            // Escrever cabeçalho para arestas
-            writer.write("*Edges");
-            writer.newLine();
-
-            for (Vertice vertice : vertices) {
+            writer.write("*Edges\n");
+            for (Vertice vertice : grafo.getVertices()) {
                 List<Aresta> arestas = grafo.getArestas(vertice);
                 for (Aresta aresta : arestas) {
-                    Vertice destino = aresta.destino;
-
-                    // Ordenar as posições dos vértices na chave
-                    int pos1 = Math.min(vertices.indexOf(vertice), vertices.indexOf(destino));
-                    int pos2 = Math.max(vertices.indexOf(vertice), vertices.indexOf(destino));
-
-                    String chaveAresta = pos1 + "_" + pos2;
-
-                    // Verificar se a aresta já foi processada
-                    if (!arestasProcessadas.contains(chaveAresta)) {
-                        writer.write((pos1 + 1) + " " +
-                                (pos2 + 1) + " " + aresta.peso + " \"" + aresta.rotulo + "\"");
-                        writer.newLine();
-
-                        // Adicionar a aresta ao conjunto de arestas processadas
-                        arestasProcessadas.add(chaveAresta);
-                    }
+                    int origemIndex = indexMap.get(aresta.origem);
+                    int destinoIndex = indexMap.get(aresta.destino);
+                    writer.write(origemIndex + " " + destinoIndex + " " + aresta.peso + " \"" + aresta.rotulo + "\"\n");
                 }
             }
-
-            System.out.println("Arquivo PAJEK gerado com sucesso!");
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Erro ao gerar o arquivo PAJEK.");
         }
     }
 

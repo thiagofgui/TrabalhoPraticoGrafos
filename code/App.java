@@ -34,7 +34,7 @@ public class App {
     }
 
     public static Grafo testeGrafo() {
-        Grafo grafo = new Grafo(false);
+        Grafo grafo = new Grafo(true);
         Vertice v1 = new Vertice("A", 3.0);
         Vertice v2 = new Vertice("B", 2.0);
         Vertice v3 = new Vertice("C", 1.0);
