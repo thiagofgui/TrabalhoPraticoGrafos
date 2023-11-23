@@ -1,5 +1,3 @@
-package code;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +6,12 @@ import java.util.Map.Entry;
 
 public class Grafo {
     private Map<Vertice, List<Aresta>> listaAdjacencia;
-    private boolean isDirecionado;
+    private boolean direcionado;
     private int quantidadeVertice = 0;
     private int quantidadeAresta = 0;
 
-    public Grafo(boolean isDirecionado) {
-        this.isDirecionado = isDirecionado;
+    public Grafo(boolean direcionado) {
+        this.direcionado = direcionado;
         this.listaAdjacencia = new HashMap<>();
     }
 
@@ -24,7 +22,7 @@ public class Grafo {
     public boolean verificaGrafoCompleto() {
         int tamanho = listaAdjacencia.size();
 
-        if (this.isDirecionado) {
+        if (this.direcionado) {
             int arestasEsperadas = tamanho * (tamanho - 1);
             return this.quantidadeAresta == arestasEsperadas;
         } else {
@@ -42,8 +40,9 @@ public class Grafo {
     public void adicionarAresta(Aresta aresta) {
         listaAdjacencia.get(aresta.origem).add(aresta);
 
-        if (!isDirecionado) {
-            listaAdjacencia.get(aresta.destino).add(new Aresta(aresta.destino, aresta.origem, aresta.peso));
+        if (!direcionado) {
+            listaAdjacencia.get(aresta.destino)
+                    .add(new Aresta(aresta.destino, aresta.origem, aresta.peso, aresta.rotulo));
         }
         this.quantidadeAresta++;
     }
@@ -83,7 +82,7 @@ public class Grafo {
     public void removerAresta(Aresta aresta) {
         listaAdjacencia.get(aresta.origem).remove(aresta);
 
-        if (!isDirecionado) {
+        if (!direcionado) {
             listaAdjacencia.get(aresta.destino).removeIf(a -> a.destino.equals(aresta.origem));
         }
         this.quantidadeAresta--;
@@ -126,6 +125,14 @@ public class Grafo {
     public boolean incidenciaArestaVertice(Aresta aresta, Vertice vertice) {
         List<Aresta> arestas = listaAdjacencia.get(vertice);
         return arestas != null && arestas.contains(aresta);
+    }
+
+    public int quantidadeAresta() {
+        return quantidadeAresta;
+    }
+
+    public int quantidadeVertice() {
+        return quantidadeVertice;
     }
 
     @Override

@@ -1,12 +1,10 @@
-package code;
-
 public class Vertice {
-    String id;
-    int peso;
+    double peso;
+    String rotulo;
 
-    public Vertice(String id, int peso) {
-        this.id = id;
+    public Vertice(String rotulo, double peso) {
         this.peso = peso;
+        this.rotulo = rotulo;
     }
 
     public String printPesoVertice() {
@@ -15,6 +13,6 @@ public class Vertice {
 
     @Override
     public String toString() {
-        return id;
+        return rotulo;
     }
 }

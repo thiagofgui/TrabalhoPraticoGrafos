@@ -1,14 +1,14 @@
-package code;
-
 public class Aresta {
     Vertice origem;
     Vertice destino;
-    int peso;
+    double peso;
+    String rotulo;
 
-    public Aresta(Vertice origem, Vertice destino, int peso) {
+    public Aresta(Vertice origem, Vertice destino, double peso, String rotulo) {
         this.origem = origem;
         this.destino = destino;
         this.peso = peso;
+        this.rotulo = rotulo;
     }
 
     public String printPesoAresta() {
