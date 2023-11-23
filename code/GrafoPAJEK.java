@@ -40,35 +40,42 @@ public class GrafoPAJEK {
     }
 
     public static Grafo lerArquivoPAJEK(String caminhoArquivo, boolean direcionado) {
-        Grafo grafo = null;
+        Grafo grafo = new Grafo(direcionado);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(caminhoArquivo))) {
             String linha;
 
-            while ((linha = br.readLine()) != null) {
-                if (linha.startsWith("*Vertices")) {
-                    int numVertices = Integer.parseInt(linha.split(" ")[1]);
-                    grafo = new Grafo(direcionado); // Assumindo grafo não direcionado
+            while ((linha = reader.readLine()) != null) {
+                linha = linha.trim();
 
+                if (linha.startsWith("*Vertices")) {
+                    // Processamento da seção de vértices
+                    int numVertices = Integer.parseInt(linha.split("\\s+")[1]);
                     for (int i = 0; i < numVertices; i++) {
-                        linha = br.readLine(); // Avançar para a próxima linha
-                        String[] dadosVertice = linha.split(" ");
-                        String rotulo = dadosVertice[0];
-                        double peso = Double.parseDouble(dadosVertice[1].replaceAll("\"", ""));
-                        Vertice vertice = new Vertice(rotulo, peso);
+                        linha = reader.readLine().trim();
+                        String[] partes = linha.split("\\s+");
+                        String rotuloVertice = partes[1].replace("\"", "");
+                        double pesoVertice = Double.parseDouble(partes[2]);
+                        Vertice vertice = new Vertice(rotuloVertice, pesoVertice);
                         grafo.adicionarVertice(vertice);
                     }
-                } else if (linha.startsWith("*Edges")) {
-                    while ((linha = br.readLine()) != null) {
-                        String[] dadosAresta = linha.split(" ");
-                        int origem = Integer.parseInt(dadosAresta[0]);
-                        int destino = Integer.parseInt(dadosAresta[1]);
-                        double peso = Double.parseDouble(dadosAresta[2]);
-                        String rotulo = dadosAresta[3];
+                } else if (linha.startsWith("*Edges") || linha.startsWith("*Arcs")) {
+                    // Processamento da seção de arestas
+                    while ((linha = reader.readLine()) != null) {
+                        linha = linha.trim();
+                        if (linha.isEmpty()) {
+                            continue;
+                        }
 
-                        Vertice verticeOrigem = grafo.getVertices().get(origem - 1);
-                        Vertice verticeDestino = grafo.getVertices().get(destino - 1);
-                        Aresta aresta = new Aresta(verticeOrigem, verticeDestino, peso, rotulo);
+                        String[] partes = linha.split("\\s+");
+                        int origemIndex = Integer.parseInt(partes[0]);
+                        int destinoIndex = Integer.parseInt(partes[1]);
+                        double pesoAresta = Double.parseDouble(partes[2]);
+                        String rotuloAresta = partes.length > 3 ? partes[3].replace("\"", "") : "";
+
+                        Vertice origem = grafo.getVertices().get(origemIndex - 1);
+                        Vertice destino = grafo.getVertices().get(destinoIndex - 1);
+                        Aresta aresta = new Aresta(origem, destino, pesoAresta, rotuloAresta);
                         grafo.adicionarAresta(aresta);
                     }
                 }
