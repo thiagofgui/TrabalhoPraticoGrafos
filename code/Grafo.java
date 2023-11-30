@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 
 public class Grafo {
     private Map<Vertice, List<Aresta>> listaAdjacencia;
@@ -133,6 +134,31 @@ public class Grafo {
 
     public int quantidadeVertice() {
         return quantidadeVertice;
+    }
+
+    // Chamada dos Algoritmos na classe Grafo
+
+    /*
+     * Dijkstra calculando a menor
+     * distância de uma origem para
+     * todos os outros vértices.
+     */
+    public Map<Vertice, Double> dijkstraParaTodos(Vertice origem) {
+        return Dijkstra.calcularDistancias(this, origem);
+    }
+
+    /*
+     * Dijkstra calculando a menor
+     * distância de todos para todos.
+     */
+    public Map<Vertice, Map<Vertice, Double>> dijkstraPorVertice() {
+        Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
+
+        for (Vertice origem : listaAdjacencia.keySet()) {
+            distancias.put(origem, Dijkstra.calcularDistancias(this, origem));
+        }
+
+        return distancias;
     }
 
     @Override
