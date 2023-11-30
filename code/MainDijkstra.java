@@ -1,51 +1,52 @@
 import java.util.Map;
 
+import exceptions.GrafoNaoConexoException;
+
 public class MainDijkstra {
     public static void main(String[] args) {
-        // Criação de instância do grafo
-        Grafo grafo = new Grafo(false);
+        // Criando um grafo de exemplo
+        Grafo grafo = new Grafo();
 
-        // Adição de vértices
-        Vertice A = new Vertice("A");
-        Vertice B = new Vertice("B");
-        Vertice C = new Vertice("C");
-        Vertice D = new Vertice("D");
-        grafo.adicionarVertice(A);
-        grafo.adicionarVertice(B);
-        grafo.adicionarVertice(C);
-        grafo.adicionarVertice(D);
+        Vertice a = new Vertice("A");
+        Vertice b = new Vertice("B");
+        Vertice c = new Vertice("C");
 
-        // Adição de arestas com pesos
-        grafo.adicionarAresta(new Aresta(A, B, 2.0, "A"));
-        grafo.adicionarAresta(new Aresta(A, C, 4.0, "B"));
-        grafo.adicionarAresta(new Aresta(B, C, 1.0, "C"));
-        grafo.adicionarAresta(new Aresta(B, D, 7.0, "D"));
-        grafo.adicionarAresta(new Aresta(C, D, 3.0, "E"));
+        Aresta arestaAB = new Aresta(a, b, 1.0, "A");
+        Aresta arestaBC = new Aresta(b, c, 2.0, "B");
+        Aresta arestaAC = new Aresta(a, c, 4.0, "C");
 
-        // Execução do algoritmo de Dijkstra
-        Map<Vertice, Map<Vertice, Double>> distanciasTodosParaTodos = grafo.dijkstraPorVertice();
+        grafo.adicionarVertice(a);
+        grafo.adicionarVertice(b);
+        grafo.adicionarVertice(c);
 
-        // Exibição das distâncias mais curtas de todos para todos
-        System.out.println("Distâncias de todos para todos:");
-        for (Vertice origem : distanciasTodosParaTodos.keySet()) {
-            System.out.println("A partir de " + origem + ":");
-            Map<Vertice, Double> distanciasOrigem = distanciasTodosParaTodos.get(origem);
-            for (Vertice destino : distanciasOrigem.keySet()) {
-                System.out.println(destino + ": " + distanciasOrigem.get(destino));
+        grafo.adicionarAresta(arestaAB);
+        grafo.adicionarAresta(arestaBC);
+        grafo.adicionarAresta(arestaAC);
+
+        // Testando Dijkstra a partir de um vértice específico
+        System.out.println("Dijkstra a partir de A:");
+        try {
+            Map<Vertice, Double> resultadoDijkstra = grafo.dijkstra(a);
+            for (Map.Entry<Vertice, Double> entry : resultadoDijkstra.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
             }
-            System.out.println();
+        } catch (GrafoNaoConexoException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
 
-        // Vértice de origem para Dijkstra específico
-        Vertice verticeOrigem = A;
-
-        // Execução do algoritmo de Dijkstra de um vértice específico para todos
-        Map<Vertice, Double> distanciasParaTodos = grafo.dijkstraParaTodos(verticeOrigem);
-
-        // Exibição das distâncias mais curtas a partir do vértice de origem
-        System.out.println("Distâncias a partir do vértice específico = " + verticeOrigem + ":");
-        for (Vertice destino : distanciasParaTodos.keySet()) {
-            System.out.println(destino + ": " + distanciasParaTodos.get(destino));
+        // Testando Dijkstra por vértice
+        System.out.println("\nDijkstra por vértice:");
+        try {
+            Map<Vertice, Map<Vertice, Double>> resultadoDijkstraPorVertice = grafo.dijkstraPorVertice();
+            for (Map.Entry<Vertice, Map<Vertice, Double>> entry : resultadoDijkstraPorVertice.entrySet()) {
+                System.out.println("Origem: " + entry.getKey());
+                Map<Vertice, Double> distancias = entry.getValue();
+                for (Map.Entry<Vertice, Double> distanciaEntry : distancias.entrySet()) {
+                    System.out.println("  " + distanciaEntry.getKey() + ": " + distanciaEntry.getValue());
+                }
+            }
+        } catch (GrafoNaoConexoException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 }
