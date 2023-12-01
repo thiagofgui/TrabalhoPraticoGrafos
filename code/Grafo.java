@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import exceptions.CicloNegativoException;
 import exceptions.GrafoNaoConexoException;
@@ -152,16 +153,34 @@ public class Grafo {
         return quantidadeVertice;
     }
 
-    /*
-     * Método para verificar se um grafo é conexo ou não
-     */
-    public boolean verificarConexo() {
-        if (verificaGrafoVazio()) {
-            throw new GrafoNaoConexoException("O grafo está vazio e, portanto, não é conexo.");
+    public List<Vertice> buscaEmProfundidade(Vertice origem) {
+        List<Vertice> resultado = new ArrayList<>();
+        Set<Vertice> visitados = new HashSet<>();
+        Stack<Vertice> pilha = new Stack<>();
+
+        pilha.push(origem);
+        visitados.add(origem);
+
+        while (!pilha.isEmpty()) {
+            Vertice atual = pilha.pop();
+            resultado.add(atual);
+
+            for (Aresta aresta : listaAdjacencia.get(atual)) {
+                Vertice vizinho = aresta.getDestino();
+
+                if (!visitados.contains(vizinho)) {
+                    pilha.push(vizinho);
+                    visitados.add(vizinho);
+                }
+            }
         }
 
-        Vertice origem = listaAdjacencia.keySet().iterator().next(); // Escolhe um vértice como origem
+        return resultado;
+    }
 
+    // Método para busca em largura (BFS)
+    public List<Vertice> buscaEmLargura(Vertice origem) {
+        List<Vertice> resultado = new ArrayList<>();
         Set<Vertice> visitados = new HashSet<>();
         Queue<Vertice> fila = new LinkedList<>();
 
@@ -170,9 +189,9 @@ public class Grafo {
 
         while (!fila.isEmpty()) {
             Vertice atual = fila.poll();
-            List<Aresta> arestas = listaAdjacencia.get(atual);
+            resultado.add(atual);
 
-            for (Aresta aresta : arestas) {
+            for (Aresta aresta : listaAdjacencia.get(atual)) {
                 Vertice vizinho = aresta.getDestino();
 
                 if (!visitados.contains(vizinho)) {
@@ -182,7 +201,53 @@ public class Grafo {
             }
         }
 
-        return visitados.size() == quantidadeVertice;
+        return resultado;
+    }
+
+    /*
+     * Método para verificar se um grafo é conexo ou não
+     */
+    public boolean verificarConexo() {
+        if (verificaGrafoVazio()) {
+            throw new GrafoNaoConexoException("O grafo está vazio e, portanto, não é conexo.");
+        }
+
+        Map<Vertice, Boolean> visitados = new HashMap<>();
+        for (Vertice vertice : listaAdjacencia.keySet()) {
+            visitados.put(vertice, false); // Inicializa todos os vértices como não visitados
+        }
+
+        for (Vertice vertice : listaAdjacencia.keySet()) {
+            if (!visitados.get(vertice)) {
+                // Faz uma busca em largura (BFS) a partir de cada vértice não visitado
+                Queue<Vertice> fila = new LinkedList<>();
+                fila.offer(vertice);
+                visitados.put(vertice, true);
+
+                while (!fila.isEmpty()) {
+                    Vertice atual = fila.poll();
+                    List<Aresta> arestas = listaAdjacencia.get(atual);
+
+                    for (Aresta aresta : arestas) {
+                        Vertice vizinho = aresta.getDestino();
+
+                        if (!visitados.get(vizinho)) {
+                            fila.offer(vizinho);
+                            visitados.put(vizinho, true);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Verifica se todos os vértices foram visitados, ou seja, se o grafo é conexo
+        for (boolean visitado : visitados.values()) {
+            if (!visitado) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Método para verificar a existência de ciclos negativos usando Bellman-Ford
@@ -216,10 +281,10 @@ public class Grafo {
      * todos os outros vértices.
      */
     public Map<Vertice, Double> dijkstra(Vertice origem) {
-        if (!verificarConexo()) {
-            throw new GrafoNaoConexoException("O grafo não é conexo e Dijkstra não pode ser aplicado.");
+        if (verificarConexo()) {
+            return Dijkstra.calcularDistancias(this, origem);
         }
-        return Dijkstra.calcularDistancias(this, origem);
+        throw new GrafoNaoConexoException("O grafo não é conexo e Dijkstra não pode ser aplicado.");
     }
 
     /*
@@ -227,16 +292,16 @@ public class Grafo {
      * distância de todos para todos.
      */
     public Map<Vertice, Map<Vertice, Double>> dijkstraPorVertice() {
-        if (!verificarConexo()) {
-            throw new GrafoNaoConexoException("O grafo não é conexo e Dijkstra não pode ser aplicado.");
-        }
-        Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
+        if (verificarConexo()) {
+            Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
 
-        for (Vertice origem : listaAdjacencia.keySet()) {
-            distancias.put(origem, Dijkstra.calcularDistancias(this, origem));
-        }
+            for (Vertice origem : listaAdjacencia.keySet()) {
+                distancias.put(origem, Dijkstra.calcularDistancias(this, origem));
+            }
 
-        return distancias;
+            return distancias;
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Dijkstra não pode ser aplicado.");
     }
 
     /*
@@ -245,10 +310,10 @@ public class Grafo {
      * todos os outros vértices.
      */
     public Map<Vertice, Double> bellmanFordParaTodos(Vertice origem) {
-        if (!verificarConexo()) {
-            throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
+        if (verificarConexo()) {
+            return BellmanFord.calcularDistancias(this, origem);
         }
-        return BellmanFord.calcularDistancias(this, origem);
+        throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
     }
 
     /*
@@ -256,7 +321,7 @@ public class Grafo {
      * distância de todos para todos.
      */
     public Map<Vertice, Double> bellmanFord(Vertice origem, Vertice destino) {
-        if (!verificarConexo()) {
+        if (verificarConexo()) {
             throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
         }
         Map<Vertice, Double> distancias = BellmanFord.calcularDistancias(this, origem);

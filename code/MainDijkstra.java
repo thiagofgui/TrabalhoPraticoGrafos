@@ -5,7 +5,7 @@ import exceptions.GrafoNaoConexoException;
 public class MainDijkstra {
     public static void main(String[] args) {
         // Criando um grafo de exemplo
-        Grafo grafo = new Grafo();
+        Grafo grafo = new Grafo(false);
 
         Vertice a = new Vertice("A");
         Vertice b = new Vertice("B");
