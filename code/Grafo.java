@@ -160,32 +160,28 @@ public class Grafo {
             throw new GrafoNaoConexoException("O grafo está vazio e, portanto, não é conexo.");
         }
 
+        Vertice origem = listaAdjacencia.keySet().iterator().next(); // Escolhe um vértice como origem
+
         Set<Vertice> visitados = new HashSet<>();
         Queue<Vertice> fila = new LinkedList<>();
 
-        Vertice origem = getVertices().get(0); // Obter o primeiro vértice diretamente
-
-        visitados.add(origem);
         fila.offer(origem);
+        visitados.add(origem);
 
         while (!fila.isEmpty()) {
-            Vertice verticeAtual = fila.poll();
-            List<Aresta> arestasAdjacentes = listaAdjacencia.get(verticeAtual);
+            Vertice atual = fila.poll();
+            List<Aresta> arestas = listaAdjacencia.get(atual);
 
-            if (arestasAdjacentes != null && !arestasAdjacentes.isEmpty()) { // Verificar se a lista de adjacência é
-                                                                             // nula ou vazia
-                for (Aresta aresta : arestasAdjacentes) {
-                    Vertice verticeAdjacente = aresta.destino;
+            for (Aresta aresta : arestas) {
+                Vertice vizinho = aresta.getDestino();
 
-                    if (!visitados.contains(verticeAdjacente)) {
-                        visitados.add(verticeAdjacente);
-                        fila.offer(verticeAdjacente);
-                    }
+                if (!visitados.contains(vizinho)) {
+                    fila.offer(vizinho);
+                    visitados.add(vizinho);
                 }
             }
         }
 
-        // O grafo é conexo se todos os vértices foram visitados
         return visitados.size() == quantidadeVertice;
     }
 
