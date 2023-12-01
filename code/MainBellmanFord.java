@@ -1,75 +1,53 @@
 import java.util.Map;
 
 import exceptions.CicloNegativoException;
+import exceptions.GrafoNaoConexoException;
 
 public class MainBellmanFord {
     public static void main(String[] args) {
-        // Crie um grafo de exemplo
-        Grafo grafo = criarGrafoDeExemplo();
+        // Criando um grafo de exemplo
+        Grafo grafo = new Grafo(false);
 
-        // Escolha um vértice de origem para o algoritmo de Bellman-Ford
-        Vertice origem = grafo.getVertices().get(3); // Vértice D como origem
+        Vertice a = new Vertice("A");
+        Vertice b = new Vertice("B");
+        Vertice c = new Vertice("C");
 
-        try {
-            // Teste o Bellman-Ford de um vértice específico para todos os outros vértices
-            System.out.println("Bellman-Ford a partir de " + origem + ":");
-            Map<Vertice, Double> distanciasParaTodos = grafo.bellmanFordParaTodos(origem);
-            imprimirDistancias(distanciasParaTodos);
+        Aresta arestaAB = new Aresta(a, b, 1.0, "A");
+        Aresta arestaBC = new Aresta(b, c, 2.0, "B");
+        Aresta arestaAC = new Aresta(a, c, 4.0, "C");
 
-            // Teste o Bellman-Ford de todos os vértices para todos os outros vértices
-            for (int i = 0; i < args.length; i++) {
-                System.out.println("\nBellman-Ford por vértice:");
-                Map<Vertice, Map<Vertice, Double>> distanciasDeTodosParaTodos = grafo.bellmanFordParaTodos();
-                imprimirDistanciasDeTodosParaTodos(distanciasDeTodosParaTodos);
-            }
-
-        } catch (CicloNegativoException e) {
-            System.out.println("Erro: " + e.getMessage());
-        }
-    }
-
-    private static Grafo criarGrafoDeExemplo() {
-        Grafo grafo = new Grafo(true);
-
-        Vertice A = new Vertice("A");
-        Vertice B = new Vertice("B");
-        Vertice C = new Vertice("C");
-        Vertice D = new Vertice("D");
-
-        grafo.adicionarVertice(A);
-        grafo.adicionarVertice(B);
-        grafo.adicionarVertice(C);
-        grafo.adicionarVertice(D);
-
-        Aresta arestaAB = new Aresta(A, B, 1, "A");
-        Aresta arestaBC = new Aresta(B, C, -2, "B");
-        Aresta arestaCD = new Aresta(C, D, 3, "C");
-        Aresta arestaDA = new Aresta(D, A, 4, "D");
+        grafo.adicionarVertice(a);
+        grafo.adicionarVertice(b);
+        grafo.adicionarVertice(c);
 
         grafo.adicionarAresta(arestaAB);
         grafo.adicionarAresta(arestaBC);
-        grafo.adicionarAresta(arestaCD);
-        grafo.adicionarAresta(arestaDA);
+        grafo.adicionarAresta(arestaAC);
 
-        return grafo;
-    }
-
-    // Método auxiliar para imprimir as distâncias de todos os vértices para todos
-    // os outros vértices
-    private static void imprimirDistanciasDeTodosParaTodos(Map<Vertice, Map<Vertice, Double>> distancias) {
-        for (Map.Entry<Vertice, Map<Vertice, Double>> entry : distancias.entrySet()) {
-            System.out.println("Origem: " + entry.getKey());
-            Map<Vertice, Double> distanciasIndividuais = entry.getValue();
-            for (Map.Entry<Vertice, Double> distanciaEntry : distanciasIndividuais.entrySet()) {
-                System.out.println("  " + distanciaEntry.getKey() + ": " + distanciaEntry.getValue());
+        // Testando Bellman-Ford a partir de um vértice específico
+        System.out.println("Bellman-Ford a partir de A para todos os vértices:");
+        try {
+            Map<Vertice, Double> resultadoBellmanFord = grafo.bellmanFordParaTodos(a);
+            for (Map.Entry<Vertice, Double> entry : resultadoBellmanFord.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
             }
+        } catch (GrafoNaoConexoException | CicloNegativoException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
-    }
+        System.out.println();
+        // Testando Bellman-Ford por vértice
+        System.out.println("Bellman-Ford por vértice:");
 
-    // Método auxiliar para imprimir as distâncias calculadas pelo Bellman-Ford
-    private static void imprimirDistancias(Map<Vertice, Double> distancias) {
-        for (Map.Entry<Vertice, Double> entry : distancias.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        try {
+            for (Vertice origem : grafo.getVertices()) {
+                Map<Vertice, Double> resultadoBellmanFordPorVertice = grafo.bellmanFordParaTodos(origem);
+                System.out.println("Origem: " + origem);
+                for (Map.Entry<Vertice, Double> entry : resultadoBellmanFordPorVertice.entrySet()) {
+                    System.out.println("  " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        } catch (GrafoNaoConexoException | CicloNegativoException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 }

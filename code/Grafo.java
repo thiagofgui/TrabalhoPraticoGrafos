@@ -321,13 +321,18 @@ public class Grafo {
      */
     public Map<Vertice, Double> bellmanFord(Vertice origem, Vertice destino) {
         if (verificarConexo()) {
-            throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
+            Map<Vertice, Double> distancias = BellmanFord.calcularDistancias(this, origem);
+            Map<Vertice, Double> resultado = new HashMap<>();
+            resultado.put(destino, distancias.get(destino));
+            return resultado;
         }
-        Map<Vertice, Double> distancias = BellmanFord.calcularDistancias(this, origem);
-        Map<Vertice, Double> resultado = new HashMap<>();
-        resultado.put(destino, distancias.get(destino));
-        return resultado;
+        throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
     }
+
+    /*
+     * Floyd-Warshall calculando a menor
+     * distância de todos para todos
+     */
 
     @Override
     public String toString() {
