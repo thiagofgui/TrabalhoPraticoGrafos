@@ -239,7 +239,6 @@ public class Grafo {
                 }
             }
         }
-
         // Verifica se todos os vértices foram visitados, ou seja, se o grafo é conexo
         for (boolean visitado : visitados.values()) {
             if (!visitado) {
