@@ -53,7 +53,13 @@ public class GerarGrafosTestes {
                 peso = random.nextInt(21) - 10; // Permite pesos negativos
             } while (peso == 0); // Garante que o peso seja diferente de 0
 
-            grafo.adicionarAresta(new Aresta(origem, destino, peso, "A" + i));
+            // Gere um rótulo aleatório para a aresta
+            String rotuloAresta;
+            do {
+                rotuloAresta = gerarRotuloAleatorio();
+            } while (!rotulosGerados.add(rotuloAresta));
+
+            grafo.adicionarAresta(new Aresta(origem, destino, peso, rotuloAresta));
         }
 
         // Garante que o grafo seja conexo
@@ -87,7 +93,7 @@ public class GerarGrafosTestes {
                 peso = random.nextInt(21) - 10; // Permite pesos negativos
             } while (peso == 0); // Garante que o peso seja diferente de 0
 
-            grafo.adicionarAresta(new Aresta(verticeIsolado, destino, peso, "Conexao"));
+            grafo.adicionarAresta(new Aresta(verticeIsolado, destino, peso, gerarRotuloAleatorio()));
         }
     }
 
