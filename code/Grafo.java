@@ -333,6 +333,12 @@ public class Grafo {
      * Floyd-Warshall calculando a menor
      * distância de todos para todos
      */
+    public Map<Vertice, Map<Vertice, Double>> floydWarshall() {
+        if (verificarConexo()) {
+            return FloydWarshall.calcularDistancias(this);
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Floyd-Warshall não pode ser aplicado.");
+    }
 
     @Override
     public String toString() {
