@@ -319,12 +319,14 @@ public class Grafo {
      * Bellman-Ford calculando a menor
      * distância de todos para todos.
      */
-    public Map<Vertice, Double> bellmanFord(Vertice origem, Vertice destino) {
+    public Map<Vertice, Map<Vertice, Double>> bellmanFordPorVertice() {
         if (verificarConexo()) {
-            Map<Vertice, Double> distancias = BellmanFord.calcularDistancias(this, origem);
-            Map<Vertice, Double> resultado = new HashMap<>();
-            resultado.put(destino, distancias.get(destino));
-            return resultado;
+            Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
+            for (Vertice origem : listaAdjacencia.keySet()) {
+                Map<Vertice, Double> distanciasBellmanFord = BellmanFord.calcularDistancias(this, origem);
+                distancias.put(origem, distanciasBellmanFord);
+            }
+            return distancias;
         }
         throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
     }

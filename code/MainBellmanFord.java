@@ -19,15 +19,15 @@ public class MainBellmanFord {
         Vertice i = new Vertice("I");
         Vertice j = new Vertice("J");
 
-        Aresta arestaAB = new Aresta(a, b, 1.0, "AB");
-        Aresta arestaBC = new Aresta(b, c, 2.0, "BC");
-        Aresta arestaAC = new Aresta(a, c, 4.0, "AC");
-        Aresta arestaDE = new Aresta(d, e, -2.0, "DE");
-        Aresta arestaEF = new Aresta(e, f, 3.0, "EF");
-        Aresta arestaFG = new Aresta(f, g, -1.0, "FG");
-        Aresta arestaGH = new Aresta(g, h, 2.0, "GH");
-        Aresta arestaHI = new Aresta(h, i, 1.0, "HI");
-        Aresta arestaIJ = new Aresta(i, j, -4.0, "IJ");
+        Aresta arestaAB = new Aresta(a, b, 10.0, "AB");
+        Aresta arestaBC = new Aresta(b, c, -2.0, "BC");
+        Aresta arestaCD = new Aresta(c, d, 20.0, "CD");
+        Aresta arestaDE = new Aresta(d, e, 30.0, "DE");
+        Aresta arestaEF = new Aresta(e, f, 50.0, "EF");
+        Aresta arestaFG = new Aresta(f, g, 20.0, "FG");
+        Aresta arestaGH = new Aresta(g, h, -1.0, "GH");
+        Aresta arestaHI = new Aresta(h, i, 30.0, "HI");
+        Aresta arestaIJ = new Aresta(i, j, 20.0, "IJ");
 
         grafo.adicionarVertice(a);
         grafo.adicionarVertice(b);
@@ -42,7 +42,7 @@ public class MainBellmanFord {
 
         grafo.adicionarAresta(arestaAB);
         grafo.adicionarAresta(arestaBC);
-        grafo.adicionarAresta(arestaAC);
+        grafo.adicionarAresta(arestaCD);
         grafo.adicionarAresta(arestaDE);
         grafo.adicionarAresta(arestaEF);
         grafo.adicionarAresta(arestaFG);
@@ -51,28 +51,28 @@ public class MainBellmanFord {
         grafo.adicionarAresta(arestaIJ);
 
         // Testando Bellman-Ford a partir de um vértice específico
-        System.out.println("Bellman-Ford a partir de A para todos os vértices:");
+        System.out.println("Bellman-Ford a partir de A:");
         try {
             Map<Vertice, Double> resultadoBellmanFord = grafo.bellmanFordParaTodos(a);
             for (Map.Entry<Vertice, Double> entry : resultadoBellmanFord.entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
-        } catch (GrafoNaoConexoException | CicloNegativoException ex) {
+        } catch (CicloNegativoException | GrafoNaoConexoException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
-        System.out.println();
-        // Testando Bellman-Ford por vértice
-        System.out.println("Bellman-Ford por vértice:");
 
+        // Testando Bellman-Ford por vértice
+        System.out.println("\nBellman-Ford por vértice:");
         try {
-            for (Vertice origem : grafo.getVertices()) {
-                Map<Vertice, Double> resultadoBellmanFordPorVertice = grafo.bellmanFordParaTodos(origem);
-                System.out.println("Origem: " + origem);
-                for (Map.Entry<Vertice, Double> entry : resultadoBellmanFordPorVertice.entrySet()) {
-                    System.out.println("  " + entry.getKey() + ": " + entry.getValue());
+            Map<Vertice, Map<Vertice, Double>> resultadoBellmanFordPorVertice = grafo.bellmanFordPorVertice();
+            for (Map.Entry<Vertice, Map<Vertice, Double>> entry : resultadoBellmanFordPorVertice.entrySet()) {
+                System.out.println("Origem: " + entry.getKey());
+                Map<Vertice, Double> distancias = entry.getValue();
+                for (Map.Entry<Vertice, Double> distanciaEntry : distancias.entrySet()) {
+                    System.out.println("  " + distanciaEntry.getKey() + ": " + distanciaEntry.getValue());
                 }
             }
-        } catch (GrafoNaoConexoException | CicloNegativoException ex) {
+        } catch (CicloNegativoException | GrafoNaoConexoException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
     }

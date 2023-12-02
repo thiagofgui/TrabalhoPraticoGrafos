@@ -9,10 +9,12 @@ public class BellmanFord {
         for (Vertice v : grafo.getVertices()) {
             distancias.put(v, Double.POSITIVE_INFINITY);
         }
-
+        distancias.remove(origem);
         distancias.put(origem, 0.0);
 
-        for (int i = 1; i <= grafo.quantidadeVertice() - 1; i++) {
+        int quantidadeVertices = grafo.quantidadeVertice();
+
+        for (int i = 1; i <= quantidadeVertices; i++) {
             for (Vertice vertice : grafo.getVertices()) {
                 for (Aresta aresta : grafo.getListaAdjacencia().get(vertice)) {
                     relaxamento(aresta, distancias);
@@ -25,8 +27,7 @@ public class BellmanFord {
             for (Aresta aresta : grafo.getListaAdjacencia().get(vertice)) {
                 if (relaxamento(aresta, distancias)) {
                     // Encontrou ciclo negativo
-                    throw new CicloNegativoException(
-                            "O grafo possui um ciclo negativo. Bellman-Ford não pode ser aplicado.");
+                    throw new CicloNegativoException("O grafo possui um ciclo negativo.");
                 }
             }
         }
