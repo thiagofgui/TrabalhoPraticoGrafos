@@ -6,7 +6,7 @@ import exceptions.GrafoNaoConexoException;
 public class MainBellmanFord {
     public static void main(String[] args) {
         // Criando um grafo de exemplo
-        Grafo grafo = new Grafo(false);
+        Grafo grafo = new Grafo(true);
 
         Vertice a = new Vertice("A");
         Vertice b = new Vertice("B");
@@ -19,12 +19,13 @@ public class MainBellmanFord {
         Vertice i = new Vertice("I");
         Vertice j = new Vertice("J");
 
-        Aresta arestaAB = new Aresta(a, b, 1.0, "AB");
-        Aresta arestaBC = new Aresta(b, c, 2.0, "BC");
+        Aresta arestaAB = new Aresta(a, b, 2.0, "AB");
+        Aresta arestaBC = new Aresta(b, c, -1.0, "BC");
         Aresta arestaAC = new Aresta(a, c, 4.0, "AC");
+        Aresta arestaCD = new Aresta(c, d, 7.0, "CD");
         Aresta arestaDE = new Aresta(d, e, -2.0, "DE");
         Aresta arestaEF = new Aresta(e, f, 3.0, "EF");
-        Aresta arestaFG = new Aresta(f, g, -1.0, "FG");
+        Aresta arestaFG = new Aresta(f, g, 1.0, "FG");
         Aresta arestaGH = new Aresta(g, h, 2.0, "GH");
         Aresta arestaHI = new Aresta(h, i, 1.0, "HI");
         Aresta arestaIJ = new Aresta(i, j, -4.0, "IJ");
@@ -43,6 +44,7 @@ public class MainBellmanFord {
         grafo.adicionarAresta(arestaAB);
         grafo.adicionarAresta(arestaBC);
         grafo.adicionarAresta(arestaAC);
+        grafo.adicionarAresta(arestaCD);
         grafo.adicionarAresta(arestaDE);
         grafo.adicionarAresta(arestaEF);
         grafo.adicionarAresta(arestaFG);

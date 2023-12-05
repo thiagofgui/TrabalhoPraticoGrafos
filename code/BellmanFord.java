@@ -1,32 +1,42 @@
-import java.util.*;
-
-import exceptions.CicloNegativoException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BellmanFord {
     public static Map<Vertice, Double> calcularDistancias(Grafo grafo, Vertice origem) {
+        int vertices = grafo.quantidadeVertice();
         Map<Vertice, Double> distancias = new HashMap<>();
 
-        for (Vertice v : grafo.getVertices()) {
-            distancias.put(v, Double.POSITIVE_INFINITY);
+        for (Vertice vertice : grafo.getVertices()) {
+            distancias.put(vertice, Double.POSITIVE_INFINITY);
         }
 
         distancias.put(origem, 0.0);
 
-        for (int i = 1; i <= grafo.quantidadeVertice() - 1; i++) {
-            for (Vertice vertice : grafo.getVertices()) {
-                for (Aresta aresta : grafo.getListaAdjacencia().get(vertice)) {
-                    relaxamento(aresta, distancias);
+        // Relaxamento das arestas repetidamente (considerando grafos não direcionados)
+        for (int i = 0; i < vertices - 1; i++) {
+            for (Vertice u : grafo.getVertices()) {
+                for (Aresta aresta : grafo.getArestas(u)) {
+                    Vertice v = aresta.getDestino();
+                    double pesoAresta = aresta.getPeso();
+
+                    if (distancias.get(u) != Double.POSITIVE_INFINITY
+                            && distancias.get(u) + pesoAresta < distancias.get(v)) {
+                        distancias.put(v, distancias.get(u) + pesoAresta);
+                    }
                 }
             }
         }
 
-        // Verificar ciclos negativos
-        for (Vertice vertice : grafo.getVertices()) {
-            for (Aresta aresta : grafo.getListaAdjacencia().get(vertice)) {
-                if (relaxamento(aresta, distancias)) {
-                    // Encontrou ciclo negativo
-                    throw new CicloNegativoException(
-                            "O grafo possui um ciclo negativo. Bellman-Ford não pode ser aplicado.");
+        // Verifica se há ciclo de peso negativo
+        for (Vertice u : grafo.getVertices()) {
+            for (Aresta aresta : grafo.getArestas(u)) {
+                Vertice v = aresta.getDestino();
+                double pesoAresta = aresta.getPeso();
+
+                if (distancias.get(u) != Double.POSITIVE_INFINITY
+                        && distancias.get(u) + pesoAresta < distancias.get(v)) {
+                    System.out.println("Há um ciclo de peso negativo, impossibilitando o algoritmo");
+                    return new HashMap<>();
                 }
             }
         }
@@ -35,15 +45,15 @@ public class BellmanFord {
     }
 
     public static boolean relaxamento(Aresta aresta, Map<Vertice, Double> distancias) {
-        Vertice u = aresta.getOrigem();
-        Vertice v = aresta.getDestino();
+        Vertice origem = aresta.getOrigem();
+        Vertice destino = aresta.getDestino();
         double pesoAresta = aresta.getPeso();
 
-        if (distancias.get(u) + pesoAresta < distancias.get(v)) {
-            distancias.put(v, distancias.get(u) + pesoAresta);
-            return true; // Relaxamento ocorreu
+        if (distancias.get(origem) + pesoAresta < distancias.get(destino)) {
+            distancias.put(destino, distancias.get(origem) + pesoAresta);
+            return true; // Indica que uma relaxação ocorreu
         }
 
-        return false; // Relaxamento não ocorreu
+        return false;
     }
 }

@@ -9,7 +9,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-import exceptions.CicloNegativoException;
 import exceptions.GrafoNaoConexoException;
 
 public class Grafo {
@@ -72,10 +71,11 @@ public class Grafo {
         return listaAdjacencia;
     }
 
-    public int[][] getMatrizAdjacencia() {
+    public double[][] getMatrizAdjacencia() {
         int tamanho = listaAdjacencia.size();
-        int[][] matrizAdjacencia = new int[tamanho][tamanho];
+        double[][] matrizAdjacencia = new double[tamanho][tamanho];
 
+        // Inicializar a matriz com valores de 0 para indicar ausência de arestas
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
                 matrizAdjacencia[i][j] = 0;
@@ -89,7 +89,15 @@ public class Grafo {
 
             for (Aresta aresta : arestas) {
                 int j = vertices.indexOf(aresta.destino);
-                matrizAdjacencia[i][j] = 1;
+
+                // Definir o peso da aresta na matriz
+                matrizAdjacencia[i][j] = aresta.peso;
+
+                // Se o grafo for não direcionado, também definir o peso correspondente
+                // para a aresta de volta
+                if (!direcionado) {
+                    matrizAdjacencia[j][i] = aresta.peso;
+                }
             }
         }
 
@@ -121,7 +129,7 @@ public class Grafo {
     }
 
     public String printMatriz() {
-        int[][] matrizAdjacencia = getMatrizAdjacencia();
+        double[][] matrizAdjacencia = getMatrizAdjacencia();
         StringBuilder sb = new StringBuilder();
 
         sb.append("Matriz de Adjacência: \n");
@@ -256,15 +264,21 @@ public class Grafo {
 
         distancias = BellmanFord.calcularDistancias(this, qualquerVertice);
 
-        // Se houver uma aresta relaxada após V - 1 iterações, então existe um ciclo
-        // negativo
+        // Executa V-1 iterações para relaxar todas as arestas
         for (int i = 1; i < this.quantidadeVertice(); i++) {
             for (Vertice vertice : this.getVertices()) {
                 for (Aresta aresta : this.listaAdjacencia.get(vertice)) {
-                    if (BellmanFord.relaxamento(aresta, distancias)) {
-                        throw new CicloNegativoException(
-                                "O grafo possui um ciclo negativo. Bellman-Ford não pode ser aplicado.");
-                    }
+                    BellmanFord.relaxamento(aresta, distancias);
+                }
+            }
+        }
+
+        // Verifica se há uma iteração adicional de relaxamento (possível ciclo
+        // negativo)
+        for (Vertice vertice : this.getVertices()) {
+            for (Aresta aresta : this.listaAdjacencia.get(vertice)) {
+                if (BellmanFord.relaxamento(aresta, distancias)) {
+                    return true; // Indica que há um ciclo negativo
                 }
             }
         }
