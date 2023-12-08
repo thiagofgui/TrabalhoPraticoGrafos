@@ -12,6 +12,10 @@ public class Vertice {
         this.rotulo = rotulo;
     }
 
+    public double getPeso() {
+        return peso;
+    }
+
     public String printPesoVertice() {
         return "Peso: " + peso;
     }
