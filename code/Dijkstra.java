@@ -2,6 +2,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import exceptions.ClasseNumeroNegativoDijstra;
+
 public class Dijkstra {
     public static Map<Vertice, Double> calcularDistancias(Grafo grafo, Vertice origem) {
         Map<Vertice, Double> distancias = new HashMap<>();
@@ -20,8 +22,9 @@ public class Dijkstra {
 
             for (Aresta aresta : grafo.getArestas(atual)) {
                 double novaDistancia = distancias.get(atual) + aresta.getPeso();
-
-                if (novaDistancia < distancias.get(aresta.getDestino())) {
+                if (aresta.getPeso() < 0) {
+                    throw new ClasseNumeroNegativoDijstra("Aresta de peso negativo encontrada");
+                } else if (novaDistancia < distancias.get(aresta.getDestino())) {
                     distancias.put(aresta.getDestino(), novaDistancia);
                     filaPrioridade.remove(aresta.getDestino());
                     filaPrioridade.add(aresta.getDestino());
