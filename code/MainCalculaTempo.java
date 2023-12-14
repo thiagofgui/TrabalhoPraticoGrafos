@@ -1,13 +1,13 @@
 public class MainCalculaTempo {
     public static void main(String[] args) {
         System.out.println("Dijkstra: ");
-        dijkstra("grafoDijkstra_10000.net");
+        dijkstra("grafoDijkstra_100.net");
         System.out.println("-----------------------------------------------------------");
         System.out.println("Bellman-Ford: ");
-        bellmanFord("grafoDijkstra_10000.net");
+        bellmanFord("grafo_100.net");
         System.out.println("-----------------------------------------------------------");
         System.out.println("Floyd-Warshall: ");
-        floydWarshall("grafoDijkstra_10000.net");
+        floydWarshall("grafo_100.net");
         System.out.println("-----------------------------------------------------------");
 
     }
