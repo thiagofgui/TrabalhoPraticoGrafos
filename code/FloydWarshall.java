@@ -36,6 +36,14 @@ public class FloydWarshall {
             }
         }
 
+        // Verifica se há ciclo de peso negativo
+        for (Vertice v : grafo.getVertices()) {
+            if (distancias.get(v).get(v) < 0) {
+                System.out.println("Há um ciclo de peso negativo, impossibilitando o algoritmo");
+                return new HashMap<>();
+            }
+        }
+
         return distancias;
     }
 }

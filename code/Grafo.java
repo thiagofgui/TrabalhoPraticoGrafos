@@ -322,7 +322,7 @@ public class Grafo {
      * distância de uma origem para
      * todos os outros vértices.
      */
-    public Map<Vertice, Double> bellmanFordParaTodos(Vertice origem) {
+    public Map<Vertice, Double> bellmanFord(Vertice origem) {
         if (verificarConexo()) {
             return BellmanFord.calcularDistancias(this, origem);
         }
@@ -333,12 +333,15 @@ public class Grafo {
      * Bellman-Ford calculando a menor
      * distância de todos para todos.
      */
-    public Map<Vertice, Double> bellmanFord(Vertice origem, Vertice destino) {
+    public Map<Vertice, Map<Vertice, Double>> bellmanFordParaTodos() {
         if (verificarConexo()) {
-            Map<Vertice, Double> distancias = BellmanFord.calcularDistancias(this, origem);
-            Map<Vertice, Double> resultado = new HashMap<>();
-            resultado.put(destino, distancias.get(destino));
-            return resultado;
+            Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
+
+            for (Vertice origem : listaAdjacencia.keySet()) {
+                distancias.put(origem, BellmanFord.calcularDistancias(this, origem));
+            }
+
+            return distancias;
         }
         throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
     }

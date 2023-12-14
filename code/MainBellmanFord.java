@@ -55,7 +55,7 @@ public class MainBellmanFord {
         // Testando Bellman-Ford a partir de um vértice específico
         System.out.println("Bellman-Ford a partir de A para todos os vértices:");
         try {
-            Map<Vertice, Double> resultadoBellmanFord = grafo.bellmanFordParaTodos(a);
+            Map<Vertice, Double> resultadoBellmanFord = grafo.bellmanFord(a);
             for (Map.Entry<Vertice, Double> entry : resultadoBellmanFord.entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
@@ -68,7 +68,7 @@ public class MainBellmanFord {
 
         try {
             for (Vertice origem : grafo.getVertices()) {
-                Map<Vertice, Double> resultadoBellmanFordPorVertice = grafo.bellmanFordParaTodos(origem);
+                Map<Vertice, Double> resultadoBellmanFordPorVertice = grafo.bellmanFord(origem);
                 System.out.println("Origem: " + origem);
                 for (Map.Entry<Vertice, Double> entry : resultadoBellmanFordPorVertice.entrySet()) {
                     System.out.println("  " + entry.getKey() + ": " + entry.getValue());
