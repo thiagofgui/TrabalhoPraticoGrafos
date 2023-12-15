@@ -357,6 +357,14 @@ public class Grafo {
         throw new GrafoNaoConexoException("O grafo não é conexo e Floyd-Warshall não pode ser aplicado.");
     }
 
+    /*
+     * AEstrela calcula a menor distância
+     * contando o peso da aresta e do vértice
+     */
+    public Map<Vertice, Double> aEstrela(Vertice origem) {
+        return null;
+    }
+
     @Override
     public String toString() {
         StringBuilder resultado = new StringBuilder();

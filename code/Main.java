@@ -8,11 +8,11 @@ public class Main {
 
         Vertice a = new Vertice("A", 0.0);
         Vertice b = new Vertice("B", 1.0);
-        Vertice c = new Vertice("C", 2.0);
+        Vertice c = new Vertice("C", 12.0);
         Vertice d = new Vertice("D", 3.0);
-        Vertice e = new Vertice("E", 4.0);
+        Vertice e = new Vertice("E", 14.0);
         Vertice f = new Vertice("F", 5.0);
-        Vertice g = new Vertice("G", 6.0);
+        Vertice g = new Vertice("G", 16.0);
         Vertice h = new Vertice("H", 7.0);
         Vertice i = new Vertice("I", 8.0);
         Vertice j = new Vertice("J", 9.0);
@@ -52,17 +52,11 @@ public class Main {
 
         // Test A* algorithm
         System.out.println("A* Algorithm:");
-        List<Vertice> caminhoAStar = AEstrela.aStar(grafo, origem, destino);
+        List<Vertice> caminhoAStar = AEstrela.estrela(grafo, origem, destino);
         if (caminhoAStar != null) {
             System.out.println("Caminho mais eficiente: " + caminhoAStar);
         } else {
             System.out.println("Caminho não encontrado.");
         }
-
-        // Test Dijkstra algorithm
-        System.out.println("\nDijkstra Algorithm:");
-        Map<Vertice, Double> distanciasDijkstra = Dijkstra.calcularDistancias(grafo, origem);
-        System.out.println("Distâncias a partir de " + origem + ": " + distanciasDijkstra);
     }
-
 }
