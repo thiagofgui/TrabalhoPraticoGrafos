@@ -361,8 +361,8 @@ public class Grafo {
      * AEstrela calcula a menor distância
      * contando o peso da aresta e do vértice
      */
-    public Map<Vertice, Double> aEstrela(Vertice origem) {
-        return null;
+    public List<Vertice> aEstrela(Vertice origem, Vertice destino) {
+        return AEstrela.estrela(this, origem, destino);
     }
 
     @Override
