@@ -43,14 +43,12 @@ public class MainFloydWarshall {
         try {
             Map<Vertice, Map<Vertice, Double>> distancias = meuGrafo.floydWarshall();
 
-            // Verifica ciclos negativos
             for (Vertice v : meuGrafo.getVertices()) {
                 if (distancias.get(v).get(v) < 0) {
                     throw new CicloNegativoException("Ciclo Negativo detectado no grafo.");
                 }
             }
 
-            // Imprime as distâncias mínimas entre todos os pares de vértices
             for (Vertice origem : distancias.keySet()) {
                 System.out.println("Distâncias a partir de " + origem + ":");
                 Map<Vertice, Double> distanciasOrigem = distancias.get(origem);

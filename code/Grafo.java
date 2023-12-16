@@ -75,7 +75,6 @@ public class Grafo {
         int tamanho = listaAdjacencia.size();
         double[][] matrizAdjacencia = new double[tamanho][tamanho];
 
-        // Inicializar a matriz com valores de 0 para indicar ausência de arestas
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
                 matrizAdjacencia[i][j] = 0;
@@ -90,11 +89,8 @@ public class Grafo {
             for (Aresta aresta : arestas) {
                 int j = vertices.indexOf(aresta.destino);
 
-                // Definir o peso da aresta na matriz
                 matrizAdjacencia[i][j] = aresta.peso;
 
-                // Se o grafo for não direcionado, também definir o peso correspondente
-                // para a aresta de volta
                 if (!direcionado) {
                     matrizAdjacencia[j][i] = aresta.peso;
                 }
@@ -118,7 +114,6 @@ public class Grafo {
             if (entry.getKey() == vertice) {
                 List<Aresta> novaLista = entry.getValue();
                 for (Aresta aresta : novaLista) {
-                    // Verifica se a aresta tem destino igual a vertice2 ou se a origem é vertice2
                     if (aresta.destino == vertice2 || aresta.origem == vertice2) {
                         return true;
                     }
@@ -186,7 +181,6 @@ public class Grafo {
         return resultado;
     }
 
-    // Método para busca em largura (BFS)
     public List<Vertice> buscaEmLargura(Vertice origem) {
         List<Vertice> resultado = new ArrayList<>();
         Set<Vertice> visitados = new HashSet<>();
@@ -222,12 +216,11 @@ public class Grafo {
 
         Map<Vertice, Boolean> visitados = new HashMap<>();
         for (Vertice vertice : listaAdjacencia.keySet()) {
-            visitados.put(vertice, false); // Inicializa todos os vértices como não visitados
+            visitados.put(vertice, false);
         }
 
         for (Vertice vertice : listaAdjacencia.keySet()) {
             if (!visitados.get(vertice)) {
-                // Faz uma busca em largura (BFS) a partir de cada vértice não visitado
                 Queue<Vertice> fila = new LinkedList<>();
                 fila.offer(vertice);
                 visitados.put(vertice, true);
@@ -247,7 +240,6 @@ public class Grafo {
                 }
             }
         }
-        // Verifica se todos os vértices foram visitados, ou seja, se o grafo é conexo
         for (boolean visitado : visitados.values()) {
             if (!visitado) {
                 return false;
@@ -257,14 +249,12 @@ public class Grafo {
         return true;
     }
 
-    // Método para verificar a existência de ciclos negativos usando Bellman-Ford
     public boolean possuiCicloNegativoBellmanFord() {
         Map<Vertice, Double> distancias = new HashMap<>();
-        Vertice qualquerVertice = this.getVertices().get(0); // Escolhe um vértice arbitrário como origem
+        Vertice qualquerVertice = this.getVertices().get(0);
 
         distancias = BellmanFord.calcularDistancias(this, qualquerVertice);
 
-        // Executa V-1 iterações para relaxar todas as arestas
         for (int i = 1; i < this.quantidadeVertice(); i++) {
             for (Vertice vertice : this.getVertices()) {
                 for (Aresta aresta : this.listaAdjacencia.get(vertice)) {
@@ -273,12 +263,10 @@ public class Grafo {
             }
         }
 
-        // Verifica se há uma iteração adicional de relaxamento (possível ciclo
-        // negativo)
         for (Vertice vertice : this.getVertices()) {
             for (Aresta aresta : this.listaAdjacencia.get(vertice)) {
                 if (BellmanFord.relaxamento(aresta, distancias)) {
-                    return true; // Indica que há um ciclo negativo
+                    return true;
                 }
             }
         }

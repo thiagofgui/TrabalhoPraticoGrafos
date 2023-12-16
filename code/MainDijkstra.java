@@ -4,7 +4,6 @@ import exceptions.GrafoNaoConexoException;
 
 public class MainDijkstra {
     public static void main(String[] args) {
-        // Criando um grafo de exemplo
         Grafo grafo = new Grafo(false);
 
         Vertice a = new Vertice("A");
@@ -23,7 +22,6 @@ public class MainDijkstra {
         grafo.adicionarAresta(arestaBC);
         grafo.adicionarAresta(arestaAC);
 
-        // Testando Dijkstra a partir de um vértice específico
         System.out.println("Dijkstra a partir de A:");
         try {
             Map<Vertice, Double> resultadoDijkstra = grafo.dijkstra(a);
@@ -34,7 +32,6 @@ public class MainDijkstra {
             System.out.println("Erro: " + e.getMessage());
         }
 
-        // Testando Dijkstra por vértice
         System.out.println("\nDijkstra por vértice:");
         try {
             Map<Vertice, Map<Vertice, Double>> resultadoDijkstraPorVertice = grafo.dijkstraPorVertice();

@@ -16,7 +16,6 @@ public class GrafoPAJEK {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
             writer.write("*Vertices " + grafo.quantidadeVertice() + "\n");
 
-            // Mapeamento de vértices para índices
             Map<Vertice, Integer> indexMap = new HashMap<>();
             int index = 1;
             for (Vertice vertice : grafo.getVertices()) {
@@ -49,7 +48,6 @@ public class GrafoPAJEK {
                 linha = linha.trim();
 
                 if (linha.startsWith("*Vertices")) {
-                    // Processamento da seção de vértices
                     int numVertices = Integer.parseInt(linha.split("\\s+")[1]);
                     for (int i = 0; i < numVertices; i++) {
                         linha = reader.readLine().trim();
@@ -60,7 +58,6 @@ public class GrafoPAJEK {
                         grafo.adicionarVertice(vertice);
                     }
                 } else if (linha.startsWith("*Edges") || linha.startsWith("*Arcs")) {
-                    // Processamento da seção de arestas
                     while ((linha = reader.readLine()) != null) {
                         linha = linha.trim();
                         if (linha.isEmpty()) {

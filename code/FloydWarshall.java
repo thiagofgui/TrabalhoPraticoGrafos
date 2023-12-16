@@ -5,7 +5,6 @@ public class FloydWarshall {
     public static Map<Vertice, Map<Vertice, Double>> calcularDistancias(Grafo grafo) {
         Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
 
-        // Inicialização da matriz de distâncias
         for (Vertice v : grafo.getVertices()) {
             distancias.put(v, new HashMap<>());
             for (Vertice u : grafo.getVertices()) {
@@ -17,7 +16,6 @@ public class FloydWarshall {
             }
         }
 
-        // Preenchimento da matriz de distâncias com os pesos das arestas
         for (Vertice v : grafo.getVertices()) {
             for (Aresta aresta : grafo.getArestas(v)) {
                 Vertice u = aresta.getDestino();
@@ -25,7 +23,6 @@ public class FloydWarshall {
             }
         }
 
-        // Algoritmo de Floyd-Warshall
         for (Vertice k : grafo.getVertices()) {
             for (Vertice i : grafo.getVertices()) {
                 for (Vertice j : grafo.getVertices()) {
@@ -36,7 +33,6 @@ public class FloydWarshall {
             }
         }
 
-        // Verifica se há ciclo de peso negativo
         for (Vertice v : grafo.getVertices()) {
             if (distancias.get(v).get(v) < 0) {
                 System.out.println("Há um ciclo de peso negativo, impossibilitando o algoritmo");

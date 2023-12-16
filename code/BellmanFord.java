@@ -12,7 +12,6 @@ public class BellmanFord {
 
         distancias.put(origem, 0.0);
 
-        // Relaxamento das arestas repetidamente (considerando grafos não direcionados)
         for (int i = 0; i < vertices - 1; i++) {
             for (Vertice u : grafo.getVertices()) {
                 for (Aresta aresta : grafo.getArestas(u)) {
@@ -27,7 +26,6 @@ public class BellmanFord {
             }
         }
 
-        // Verifica se há ciclo de peso negativo
         for (Vertice u : grafo.getVertices()) {
             for (Aresta aresta : grafo.getArestas(u)) {
                 Vertice v = aresta.getDestino();
@@ -51,7 +49,7 @@ public class BellmanFord {
 
         if (distancias.get(origem) + pesoAresta < distancias.get(destino)) {
             distancias.put(destino, distancias.get(origem) + pesoAresta);
-            return true; // Indica que uma relaxação ocorreu
+            return true;
         }
 
         return false;

@@ -10,7 +10,7 @@ public class GerarGrafosTestes {
     }
 
     public static void gerarGrafosTestes() {
-        int[] tamanhos = { 100, 1000, 10000 }; // Adicione mais tamanhos conforme necessário
+        int[] tamanhos = { 100, 1000, 10000 };
 
         for (int tamanho : tamanhos) {
             Grafo grafo = gerarGrafoConexo(tamanho);
@@ -23,24 +23,21 @@ public class GerarGrafosTestes {
         Random random = new Random();
         Set<String> rotulosGerados = new HashSet<>();
 
-        // Adicione vértices
         for (int i = 1; i <= tamanho; i++) {
             String rotulo;
 
-            // Garante que o rótulo seja único
             do {
                 rotulo = gerarRotuloAleatorio();
             } while (!rotulosGerados.add(rotulo));
 
             double peso;
             do {
-                peso = ((int) (random.nextDouble() * 10)) / 1.0; // Garante um número inteiro
-            } while (peso <= 0.0); // Garante que o peso seja maior que 0
+                peso = ((int) (random.nextDouble() * 10)) / 1.0;
+            } while (peso <= 0.0);
 
             grafo.adicionarVertice(new Vertice(rotulo, peso));
         }
 
-        // Adicione arestas aleatórias
         for (int i = 1; i <= tamanho; i++) {
             int origemIndex = random.nextInt(tamanho) + 1;
             int destinoIndex = random.nextInt(tamanho) + 1;
@@ -50,10 +47,9 @@ public class GerarGrafosTestes {
 
             int peso;
             do {
-                peso = random.nextInt(21) - 10; // Permite pesos negativos
-            } while (peso == 0); // Garante que o peso seja diferente de 0
+                peso = random.nextInt(21) - 10;
+            } while (peso == 0);
 
-            // Gere um rótulo aleatório para a aresta
             String rotuloAresta;
             do {
                 rotuloAresta = gerarRotuloAleatorio();
@@ -62,27 +58,24 @@ public class GerarGrafosTestes {
             grafo.adicionarAresta(new Aresta(origem, destino, peso, rotuloAresta));
         }
 
-        // Garante que o grafo seja conexo
         conectarVerticesIsolados(grafo);
 
         return grafo;
     }
 
     private static String gerarRotuloAleatorio() {
-        return UUID.randomUUID().toString().substring(0, 8); // Gera uma string aleatória de 8 caracteres
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
     public static void conectarVerticesIsolados(Grafo grafo) {
         List<Vertice> verticesIsolados = new ArrayList<>();
 
-        // Encontra vértices isolados
         for (Vertice vertice : grafo.getVertices()) {
             if (grafo.getArestas(vertice).isEmpty()) {
                 verticesIsolados.add(vertice);
             }
         }
 
-        // Conecta os vértices isolados a outros vértices aleatórios
         Random random = new Random();
         for (Vertice verticeIsolado : verticesIsolados) {
             int destinoIndex = random.nextInt(grafo.quantidadeVertice()) + 1;
@@ -90,8 +83,8 @@ public class GerarGrafosTestes {
 
             int peso;
             do {
-                peso = random.nextInt(21) - 10; // Permite pesos negativos
-            } while (peso == 0); // Garante que o peso seja diferente de 0
+                peso = random.nextInt(21) - 10;
+            } while (peso == 0);
 
             grafo.adicionarAresta(new Aresta(verticeIsolado, destino, peso, gerarRotuloAleatorio()));
         }
@@ -104,7 +97,6 @@ public class GerarGrafosTestes {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(caminhoArquivo))) {
             writer.write("*Vertices " + grafo.quantidadeVertice() + "\n");
 
-            // Mapeamento de vértices para índices
             Map<Vertice, Integer> indexMap = new HashMap<>();
             int index = 1;
             for (Vertice vertice : grafo.getVertices()) {

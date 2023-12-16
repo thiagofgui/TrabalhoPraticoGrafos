@@ -29,28 +29,26 @@ public class Main {
         grafo.adicionarVertice(j);
 
         grafo.adicionarAresta(new Aresta(a, b, 2.0, "ab"));
-        grafo.adicionarAresta(new Aresta(a, c, 3.0, "ac")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(a, c, 3.0, "ac"));
         grafo.adicionarAresta(new Aresta(b, c, 1.0, "bc"));
-        grafo.adicionarAresta(new Aresta(b, d, 4.0, "bd")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(b, d, 4.0, "bd"));
         grafo.adicionarAresta(new Aresta(c, d, 2.0, "cd"));
-        grafo.adicionarAresta(new Aresta(c, e, 3.0, "ce")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(c, e, 3.0, "ce"));
         grafo.adicionarAresta(new Aresta(d, e, 1.0, "de"));
-        grafo.adicionarAresta(new Aresta(d, f, 4.0, "df")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(d, f, 4.0, "df"));
         grafo.adicionarAresta(new Aresta(e, f, 2.0, "ef"));
-        grafo.adicionarAresta(new Aresta(e, g, 3.0, "eg")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(e, g, 3.0, "eg"));
         grafo.adicionarAresta(new Aresta(f, g, 1.0, "fg"));
-        grafo.adicionarAresta(new Aresta(f, h, 4.0, "fh")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(f, h, 4.0, "fh"));
         grafo.adicionarAresta(new Aresta(g, h, 2.0, "gh"));
-        grafo.adicionarAresta(new Aresta(g, i, 3.0, "gi")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(g, i, 3.0, "gi"));
         grafo.adicionarAresta(new Aresta(h, i, 1.0, "hi"));
-        grafo.adicionarAresta(new Aresta(h, j, 4.0, "hj")); // Nova aresta para diversificar os caminhos
+        grafo.adicionarAresta(new Aresta(h, j, 4.0, "hj"));
         grafo.adicionarAresta(new Aresta(i, j, 2.0, "ij"));
 
-        // Define the start and end vertices for testing
         Vertice origem = a;
         Vertice destino = j;
 
-        // Test A* algorithm
         System.out.println("A* Algorithm:");
         List<Vertice> caminhoAStar = AEstrela.estrela(grafo, origem, destino);
         if (caminhoAStar != null) {
