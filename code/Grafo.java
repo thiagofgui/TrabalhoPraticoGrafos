@@ -1,8 +1,15 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
+import java.util.Stack;
+
+import exceptions.GrafoNaoConexoException;
 
 public class Grafo {
     private Map<Vertice, List<Aresta>> listaAdjacencia;
@@ -12,6 +19,11 @@ public class Grafo {
 
     public Grafo(boolean direcionado) {
         this.direcionado = direcionado;
+        this.listaAdjacencia = new HashMap<>();
+    }
+
+    public Grafo() {
+        this.direcionado = true;
         this.listaAdjacencia = new HashMap<>();
     }
 
@@ -55,10 +67,15 @@ public class Grafo {
         return new ArrayList<>(listaAdjacencia.keySet());
     }
 
-    public int[][] getMatrizAdjacencia() {
-        int tamanho = listaAdjacencia.size();
-        int[][] matrizAdjacencia = new int[tamanho][tamanho];
+    public Map<Vertice, List<Aresta>> getListaAdjacencia() {
+        return listaAdjacencia;
+    }
 
+    public double[][] getMatrizAdjacencia() {
+        int tamanho = listaAdjacencia.size();
+        double[][] matrizAdjacencia = new double[tamanho][tamanho];
+
+        // Inicializar a matriz com valores de 0 para indicar ausência de arestas
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
                 matrizAdjacencia[i][j] = 0;
@@ -72,7 +89,15 @@ public class Grafo {
 
             for (Aresta aresta : arestas) {
                 int j = vertices.indexOf(aresta.destino);
-                matrizAdjacencia[i][j] = 1;
+
+                // Definir o peso da aresta na matriz
+                matrizAdjacencia[i][j] = aresta.peso;
+
+                // Se o grafo for não direcionado, também definir o peso correspondente
+                // para a aresta de volta
+                if (!direcionado) {
+                    matrizAdjacencia[j][i] = aresta.peso;
+                }
             }
         }
 
@@ -93,7 +118,8 @@ public class Grafo {
             if (entry.getKey() == vertice) {
                 List<Aresta> novaLista = entry.getValue();
                 for (Aresta aresta : novaLista) {
-                    if (aresta.destino == vertice2) {
+                    // Verifica se a aresta tem destino igual a vertice2 ou se a origem é vertice2
+                    if (aresta.destino == vertice2 || aresta.origem == vertice2) {
                         return true;
                     }
                 }
@@ -103,7 +129,7 @@ public class Grafo {
     }
 
     public String printMatriz() {
-        int[][] matrizAdjacencia = getMatrizAdjacencia();
+        double[][] matrizAdjacencia = getMatrizAdjacencia();
         StringBuilder sb = new StringBuilder();
 
         sb.append("Matriz de Adjacência: \n");
@@ -133,6 +159,210 @@ public class Grafo {
 
     public int quantidadeVertice() {
         return quantidadeVertice;
+    }
+
+    public List<Vertice> buscaEmProfundidade(Vertice origem) {
+        List<Vertice> resultado = new ArrayList<>();
+        Set<Vertice> visitados = new HashSet<>();
+        Stack<Vertice> pilha = new Stack<>();
+
+        pilha.push(origem);
+        visitados.add(origem);
+
+        while (!pilha.isEmpty()) {
+            Vertice atual = pilha.pop();
+            resultado.add(atual);
+
+            for (Aresta aresta : listaAdjacencia.get(atual)) {
+                Vertice vizinho = aresta.getDestino();
+
+                if (!visitados.contains(vizinho)) {
+                    pilha.push(vizinho);
+                    visitados.add(vizinho);
+                }
+            }
+        }
+
+        return resultado;
+    }
+
+    // Método para busca em largura (BFS)
+    public List<Vertice> buscaEmLargura(Vertice origem) {
+        List<Vertice> resultado = new ArrayList<>();
+        Set<Vertice> visitados = new HashSet<>();
+        Queue<Vertice> fila = new LinkedList<>();
+
+        fila.offer(origem);
+        visitados.add(origem);
+
+        while (!fila.isEmpty()) {
+            Vertice atual = fila.poll();
+            resultado.add(atual);
+
+            for (Aresta aresta : listaAdjacencia.get(atual)) {
+                Vertice vizinho = aresta.getDestino();
+
+                if (!visitados.contains(vizinho)) {
+                    fila.offer(vizinho);
+                    visitados.add(vizinho);
+                }
+            }
+        }
+
+        return resultado;
+    }
+
+    /*
+     * Método para verificar se um grafo é conexo ou não
+     */
+    public boolean verificarConexo() {
+        if (verificaGrafoVazio()) {
+            throw new GrafoNaoConexoException("O grafo está vazio e, portanto, não é conexo.");
+        }
+
+        Map<Vertice, Boolean> visitados = new HashMap<>();
+        for (Vertice vertice : listaAdjacencia.keySet()) {
+            visitados.put(vertice, false); // Inicializa todos os vértices como não visitados
+        }
+
+        for (Vertice vertice : listaAdjacencia.keySet()) {
+            if (!visitados.get(vertice)) {
+                // Faz uma busca em largura (BFS) a partir de cada vértice não visitado
+                Queue<Vertice> fila = new LinkedList<>();
+                fila.offer(vertice);
+                visitados.put(vertice, true);
+
+                while (!fila.isEmpty()) {
+                    Vertice atual = fila.poll();
+                    List<Aresta> arestas = listaAdjacencia.get(atual);
+
+                    for (Aresta aresta : arestas) {
+                        Vertice vizinho = aresta.getDestino();
+
+                        if (!visitados.get(vizinho)) {
+                            fila.offer(vizinho);
+                            visitados.put(vizinho, true);
+                        }
+                    }
+                }
+            }
+        }
+        // Verifica se todos os vértices foram visitados, ou seja, se o grafo é conexo
+        for (boolean visitado : visitados.values()) {
+            if (!visitado) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Método para verificar a existência de ciclos negativos usando Bellman-Ford
+    public boolean possuiCicloNegativoBellmanFord() {
+        Map<Vertice, Double> distancias = new HashMap<>();
+        Vertice qualquerVertice = this.getVertices().get(0); // Escolhe um vértice arbitrário como origem
+
+        distancias = BellmanFord.calcularDistancias(this, qualquerVertice);
+
+        // Executa V-1 iterações para relaxar todas as arestas
+        for (int i = 1; i < this.quantidadeVertice(); i++) {
+            for (Vertice vertice : this.getVertices()) {
+                for (Aresta aresta : this.listaAdjacencia.get(vertice)) {
+                    BellmanFord.relaxamento(aresta, distancias);
+                }
+            }
+        }
+
+        // Verifica se há uma iteração adicional de relaxamento (possível ciclo
+        // negativo)
+        for (Vertice vertice : this.getVertices()) {
+            for (Aresta aresta : this.listaAdjacencia.get(vertice)) {
+                if (BellmanFord.relaxamento(aresta, distancias)) {
+                    return true; // Indica que há um ciclo negativo
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // Chamada dos Algoritmos na classe Grafo
+
+    /*
+     * Dijkstra calculando a menor
+     * distância de uma origem para
+     * todos os outros vértices.
+     */
+    public Map<Vertice, Double> dijkstra(Vertice origem) {
+        if (verificarConexo()) {
+            return Dijkstra.calcularDistancias(this, origem);
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Dijkstra não pode ser aplicado.");
+    }
+
+    /*
+     * Dijkstra calculando a menor
+     * distância de todos para todos.
+     */
+    public Map<Vertice, Map<Vertice, Double>> dijkstraPorVertice() {
+        if (verificarConexo()) {
+            Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
+
+            for (Vertice origem : listaAdjacencia.keySet()) {
+                distancias.put(origem, Dijkstra.calcularDistancias(this, origem));
+            }
+
+            return distancias;
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Dijkstra não pode ser aplicado.");
+    }
+
+    /*
+     * Bellman-Ford calculando a menor
+     * distância de uma origem para
+     * todos os outros vértices.
+     */
+    public Map<Vertice, Double> bellmanFord(Vertice origem) {
+        if (verificarConexo()) {
+            return BellmanFord.calcularDistancias(this, origem);
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
+    }
+
+    /*
+     * Bellman-Ford calculando a menor
+     * distância de todos para todos.
+     */
+    public Map<Vertice, Map<Vertice, Double>> bellmanFordParaTodos() {
+        if (verificarConexo()) {
+            Map<Vertice, Map<Vertice, Double>> distancias = new HashMap<>();
+
+            for (Vertice origem : listaAdjacencia.keySet()) {
+                distancias.put(origem, BellmanFord.calcularDistancias(this, origem));
+            }
+
+            return distancias;
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Bellman-Ford não pode ser aplicado.");
+    }
+
+    /*
+     * Floyd-Warshall calculando a menor
+     * distância de todos para todos
+     */
+    public Map<Vertice, Map<Vertice, Double>> floydWarshall() {
+        if (verificarConexo()) {
+            return FloydWarshall.calcularDistancias(this);
+        }
+        throw new GrafoNaoConexoException("O grafo não é conexo e Floyd-Warshall não pode ser aplicado.");
+    }
+
+    /*
+     * AEstrela calcula a menor distância
+     * contando o peso da aresta e do vértice
+     */
+    public List<Vertice> aEstrela(Vertice origem, Vertice destino) {
+        return AEstrela.estrela(this, origem, destino);
     }
 
     @Override

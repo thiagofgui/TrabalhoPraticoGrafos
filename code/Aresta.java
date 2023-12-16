@@ -11,6 +11,18 @@ public class Aresta {
         this.rotulo = rotulo;
     }
 
+    public Vertice getOrigem() {
+        return origem;
+    }
+
+    public Vertice getDestino() {
+        return destino;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
     public String printPesoAresta() {
         return "Peso: " + peso;
     }
